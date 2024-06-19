@@ -33,6 +33,29 @@ def search(root, item):
         return search(root.rightChild, item)   
     else: 
         return -1
+    
+def inorderSuccessor(root):
+    successor = root.rightChild
+    while successor.leftChild is not None:
+        successor = successor.leftChild 
+    return successor    
+
+def delete(root, value):
+    if root is None:
+        return root
+    elif value > root.value:
+        root.righChild = delete(root.rightChild, value)
+    elif value < root.value:
+        root.leftChild = delete(root.leftChild, value) 
+    else:
+        if root.rightChild is None:
+            return root.leftChild
+        elif root.leftChild is None:
+            return root.rightChild
+        successor = inorderSuccessor(root).value
+        root.value = successor
+        root.rightChild = delete(root.rightChild, successor)
+    return root
 
 root = Node(8)
 root.leftChild = Node(3)
@@ -52,4 +75,8 @@ for i in range(0,9):
 
 inorderTraversal(root)""" 
 
-print(search(root, 12))
+#print(search(root, 12))
+root = delete(root, 6)
+print()
+inorderTraversal(root)
+
